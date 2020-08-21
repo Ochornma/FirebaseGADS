@@ -1,6 +1,8 @@
 package com.promise.gadsbooks;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +17,17 @@ import java.util.Objects;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth.AuthStateListener authStateListener;
+    private SharedPreferences sharedpreferences;
+    private SharedPreferences.Editor editor;
+    private String PREFRENCES = "subscription";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         Objects.requireNonNull(getSupportActionBar()).setTitle("AUTHENTICATION");
+        sharedpreferences = getSharedPreferences(PREFRENCES, Context.MODE_PRIVATE);
+
         Button login = findViewById(R.id.login);
         Button signup = findViewById(R.id.signup);
         login.setOnClickListener(this);
@@ -33,8 +40,13 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
+
+                        editor = sharedpreferences.edit();
+                        editor.putBoolean("admin", admin(Objects.requireNonNull(firebaseAuth.getCurrentUser().getEmail())));
+                        editor.apply();
+
                     Intent intent = new Intent(AuthActivity.this, BookActivity.class);
-                    intent.putExtra(Constant.admin, admin(Objects.requireNonNull(firebaseAuth.getCurrentUser().getEmail())));
+                    //intent.putExtra(Constant.admin, admin(Objects.requireNonNull(firebaseAuth.getCurrentUser().getEmail())));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();

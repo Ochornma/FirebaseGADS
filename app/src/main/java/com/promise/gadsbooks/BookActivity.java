@@ -42,12 +42,13 @@ public class BookActivity extends AppCompatActivity implements CompoundButton.On
         setContentView(R.layout.activity_book);
         Objects.requireNonNull(getSupportActionBar()).setTitle("BOOK");
         cardView = findViewById(R.id.admin_card);
-        boolean admin = getIntent().getBooleanExtra(Constant.admin, false);
+        sharedpreferences = getSharedPreferences(PREFRENCES, Context.MODE_PRIVATE);
+        editor = sharedpreferences.edit();
+        boolean admin = sharedpreferences.getBoolean("admin", false);
         if (!admin){
             cardView.setVisibility(View.GONE);
         }
-        sharedpreferences = getSharedPreferences(PREFRENCES, Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
+
         java = findViewById(R.id.java_subscribe);
         kotlin = findViewById(R.id.kotlin_subscribe);
         firebase = findViewById(R.id.firebase_subscribe);

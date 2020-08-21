@@ -25,7 +25,7 @@ public class SpecificBookAdapter extends RecyclerView.Adapter<SpecificBookAdapte
         Book model = books.get(position);
         holder.topic.setText(model.getTitle());
         holder.description.setText(model.getDescription());
-        Picasso.get().load(model.getImage()).placeholder(R.drawable.appstore).error(R.drawable.appstore).fit().into(holder.imageView);
+        Picasso.get().load(model.getImage()).placeholder(R.drawable.appstore_small).error(R.drawable.appstore_small).fit().into(holder.imageView);
     }
 
     @Override
